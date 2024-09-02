@@ -19,16 +19,60 @@ def create_db_and_tables():
 
 
 def create_heroes():
-    hero1 = Hero(name="Deadpond", secret_name="Dive Wilson")
-    hero2 = Hero(name="Spider-Boy", secret_name="Pedro Parqueador")
-    hero3 = Hero(name="Rusty-Man", secret_name="Tommy Sharp", age=48)
+    hero_1 = Hero(name="Deadpond", secret_name="Dive Wilson")
+    hero_2 = Hero(name="Spider-Boy", secret_name="Pedro Parqueador")
+    hero_3 = Hero(name="Rusty-Man", secret_name="Tommy Sharp", age=48)
+
+    print("Before interacting with the database")  # id is None
+    print("Hero 1:", hero_1)
+    print("Hero 2:", hero_2)
+    print("Hero 3:", hero_3)
 
     with Session(engine) as session:
-        session.add(hero1)
-        session.add(hero2)
-        session.add(hero3)
+        session.add(hero_1)
+        session.add(hero_2)
+        session.add(hero_3)
+
+        print("After adding to the session")  # id is still None
+        print("Hero 1:", hero_1)
+        print("Hero 2:", hero_2)
+        print("Hero 3:", hero_3)
 
         session.commit()
+
+        print(
+            "After commiting the session"
+        )  # the Hero instance objects had no data at all
+        print("Hero 1:", hero_1)  # We only accessed the entire object and printed it
+        print("Hero 2:", hero_2)
+        print("Hero 3:", hero_3)
+
+        print("After committing the session, show IDs")
+        print("Hero 1 ID:", hero_1.id)
+        print("Hero 2 ID:", hero_2.id)
+        print("Hero 3 ID:", hero_3.id)
+
+        print("After committing the session, show names")
+        print("Hero 1 name:", hero_1.name)
+        print("Hero 2 name:", hero_2.name)
+        print("Hero 3 name:", hero_3.name)
+
+        # Explicitly refreshing the data
+        session.refresh(hero_1)
+        session.refresh(hero_2)
+        session.refresh(hero_3)
+
+        print(
+            "After refreshing the heroes"
+        )  # It's gonna show all the data that recenly has been commited
+        print("Hero 1:", hero_1)
+        print("Hero 2:", hero_2)
+        print("Hero 3:", hero_3)
+
+    print("After the session closes")
+    print("Hero 1:", hero_1)
+    print("Hero 2:", hero_2)
+    print("Hero 3:", hero_3)
 
 
 def main():
